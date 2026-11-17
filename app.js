@@ -857,6 +857,7 @@ const App = {
 
   showAnalysis(items, { pasted }) {
     const a = Analysis.analyze(items);
+    a.template = Analysis.template({ ...a, keyword: document.getElementById('refQuery').value.trim() });
     const fmt = n => n >= 1e8 ? (n / 1e8).toFixed(1) + '억' : n >= 1e4 ? (n / 1e4).toFixed(1) + '만' : String(n);
     const top = items.slice(0, 12);
 
@@ -874,8 +875,8 @@ const App = {
         </div>
         <div class="card tight">
           <h3>컷 리듬</h3>
-          <p>평균 길이 <b style="color:#fff">${a.avgSec || '-'}초</b> · 제목 평균 <b style="color:#fff">${a.avgLen}자</b>${a.medianViews ? ' · 조회수 중앙값 <b style="color:#fff">' + fmt(a.medianViews) + '</b>' : ''}</p>
-          <p style="margin-top:6px">권장: <b style="color:#fff">${a.cutCount}컷 / 컷당 ${a.cutSeconds}초</b> (평균 길이 기준 계산)</p>
+          <p>평균 길이 <b style="color:#fff">${a.avgSec ? a.avgSec + '초' : '정보 없음'}</b> · 제목 평균 <b style="color:#fff">${a.avgLen}자</b>${a.medianViews ? ' · 조회수 중앙값 <b style="color:#fff">' + fmt(a.medianViews) + '</b>' : ''}</p>
+          <p style="margin-top:6px">권장: <b style="color:#fff">${a.cutCount}컷 / 컷당 ${a.cutSeconds}초</b>${a.avgSec ? ' (평균 길이 기준)' : ' (일반적인 40초 기준)'}</p>
         </div>
         <div class="card tight">
           <h3>자막 구조 템플릿</h3>
@@ -887,7 +888,7 @@ const App = {
         </div>
         <div class="card tight">
           <h3>자주 쓰인 단어</h3>
-          <p>${a.words.map(w => `<span class="chip" style="cursor:default;margin:0 6px 6px 0">${esc(w[0])} <b>${w[1]}</b></span>`).join('') || '<span class="hint">없음</span>'}</p>
+          <p>${a.words.slice(0, 8).map(w => `<span class="chip" style="cursor:default;margin:0 6px 6px 0">${esc(w[0])} <b>${w[1]}</b></span>`).join('') || '<span class="hint">없음</span>'}</p>
         </div>
       </div>
 
@@ -1023,7 +1024,7 @@ const Templates = {
     const lines = {
       emotion: [
         `그날 밤, 아무도 말하지 않았다`,
-        `${Ts} — [누가] [어디서] 하루를 보냈다`,
+        `[누가] [어디서] 하루를 보냈다`,
         `그런데 [예상치 못한 일]이 벌어졌다`,
         `[반전] 사실은 [숨겨진 사정]이 있었다`,
         `[감정 절정] 그 사람이 마지막에 남긴 말`,
@@ -1031,7 +1032,7 @@ const Templates = {
       ],
       info: [
         `이거 모르고 그냥 넘기면 큰일 납니다`,
-        `${Ts} — 다들 [흔한 오해]라고 생각합니다`,
+        `다들 [흔한 오해]라고 생각합니다`,
         `실제로는 [사실]입니다. 이유는 [근거] 때문입니다`,
         `[근거 2] — [수치나 사례 한 줄]`,
         `그래서 [구체적인 방법]을 권합니다`,
@@ -1039,14 +1040,14 @@ const Templates = {
       ],
       movie: [
         `이 영화, 결말 하나 때문에 다시 봤습니다`,
-        `${Ts} — 줄거리는 단순합니다`,
+        `줄거리는 단순합니다`,
         `[주인공]은 [목표]를 향해 움직이고, [장애물]을 만납니다`,
         `그런데 중반에 [반전]이 터집니다`,
         `결말 직전, [핵심 장면]에서 모든 게 뒤집힙니다`,
         `스포일러 없이 보고 싶다면 저장만 해두세요`
       ],
       shopping: [
-        `${Ts}, 이거 모르고 사면 돈 아깝습니다`,
+        `이거 모르고 사면 돈 아깝습니다`,
         `그래서 직접 써봤습니다 — [제품명]`,
         `첫 번째, [기능1]이 생각보다 편합니다`,
         `두 번째, [기능2]는 [상황]에서 진짜 유용합니다`,
@@ -1055,7 +1056,7 @@ const Templates = {
       ],
       story: [
         `30년 동안 열리지 않은 문이 있었다`,
-        `${Ts} — [주인공]은 [장소]로 이사 왔다`,
+        `[주인공]은 [장소]로 이사 왔다`,
         `첫날 밤, [소리/흔적]이 시작됐다`,
         `[주인공]은 [선택]을 해야 했다`,
         `문이 열린 순간, [반전]이 드러났다`,

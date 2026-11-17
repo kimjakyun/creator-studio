@@ -129,9 +129,10 @@ const Analysis = {
     };
   },
 
-  template({ topWord, topHook, avgSec, cutSeconds, cutCount, avgLen }) {
+  template({ topWord, topHook, avgSec, cutSeconds, cutCount, avgLen, keyword }) {
+    const head = keyword ? `“${keyword}”` : (topWord ? `“${topWord}”` : '숫자나 질문');
     return [
-      `[0~2초] 훅 — ${topHook.name} 방식. ${topWord ? `“${topWord}”를 첫 문장에 넣기` : '숫자나 질문으로 시작'} / ${Math.max(6, Math.min(14, avgLen || 12))}자 안쪽`,
+      `[0~2초] 훅 — ${topHook.name} 방식. ${head}를 첫 문장에 넣기 / ${Math.max(6, Math.min(14, avgLen || 12))}자 안쪽`,
       `[2~${2 + cutSeconds}초] 상황 — 왜 이 이야기를 해야 하는지 한 줄`,
       `[중반 ${cutCount - 3}컷] 근거·전개 — 한 컷에 정보 1개, ${cutSeconds}초 간격`,
       `[마지막-1컷] 반전 또는 반박 — “그런데 여기서…”`,
@@ -144,7 +145,7 @@ const Analysis = {
   parseTitles(text) {
     return String(text || '')
       .split(/\r?\n/)
-      .map(s => s.replace(/^\s*[\d.\-•)]+\s*/, '').replace(/\s{2,}.*$/, '').trim())
+      .map(s => s.replace(/^\s*(?:\d{1,2}[.)]\s+|[-•·]\s+)/, '').replace(/\s{2,}.*$/, '').trim())
       .filter(s => s.length >= 4 && s.length <= 120);
   }
 };
