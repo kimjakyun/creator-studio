@@ -192,7 +192,7 @@ const Commons = {
           isFree: /(cc|public domain|pd|cc0|gfdl)/i.test(license)
         };
       })
-      .filter(x => /\.(jpe?g|png|webp|gif)$/i.test(x.url || ''))
+      .filter(x => /\.(jpe?g|png|webp|gif)$/i.test(String(x.url || '').split('?')[0]))
       .filter(x => opts.freeOnly ? x.isFree : true);
     return out;
   }

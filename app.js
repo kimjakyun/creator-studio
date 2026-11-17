@@ -1030,8 +1030,8 @@ const Templates = {
         `끝까지 보셨다면 저장해 두세요`
       ],
       info: [
-        `${Ts}, 이거 모르면 손해입니다`,
-        `많이들 [흔한 오해]라고 알고 계십니다`,
+        `이거 모르고 그냥 넘기면 큰일 납니다`,
+        `${Ts} — 다들 [흔한 오해]라고 생각합니다`,
         `실제로는 [사실]입니다. 이유는 [근거] 때문입니다`,
         `[근거 2] — [수치나 사례 한 줄]`,
         `그래서 [구체적인 방법]을 권합니다`,
@@ -1077,23 +1077,37 @@ const Templates = {
     const diff = total - sum;
     if (shots.length) shots[shots.length - 1].seconds = Math.max(2, shots[shots.length - 1].seconds + diff);
 
-    const first = shots[0] ? shots[0].text : T;
+    const titleSet = {
+      emotion: [`${T}`, `${T} (실화)`, `${T} — 마지막 장면`],
+      info: [`${T}`, `${T} 30초 정리`, `${T}, 이거 모르면 손해`],
+      movie: [`${T}`, `${T} — 결말까지 1분`, `${T} 요약`],
+      shopping: [`${T}`, `${T} 3주 써본 솔직 후기`, `${T}, 사기 전에 보세요`],
+      story: [`${T}`, `${T} (단편)`, `${T} — 마지막 반전`]
+    }[preset] || [`${T}`, `${T} 요약`];
+    const hookSet = {
+      emotion: '첫 문장에 장면 + 궁금증을 동시에',
+      info: '통념을 뒤집는 한 문장으로 시작',
+      movie: '결말을 살짝 흘려 끝까지 보게 만들기',
+      shopping: '손해 보는 상황을 먼저 보여주기',
+      story: '설명 없이 사건부터 던지기'
+    }[preset] || '첫 문장에 궁금증 심기';
+    /* 해시태그: 주제의 핵심 낱말 2개를 붙여 짧게 */
+    const tagWords = T.replace(/[^\uAC00-\uD7A3a-zA-Z0-9\s]/g, ' ').split(/\s+/).filter(w => w.length >= 2);
+    const tagCore = tagWords.slice(0, 2).join('').slice(0, 12) || '쇼츠';
+    const first = titleSet[0];
+
     return {
       kind: 'shorts',
       topic: T,
       engine: 'template',
-      title_candidates: [
-        first,
-        `${T} — 아무도 몰랐던 이야기`,
-        `${T} (${total}초 정리)`
-      ],
-      hook_pattern: '첫 문장에 상황 + 궁금증을 동시에',
+      title_candidates: titleSet,
+      hook_pattern: hookSet,
       thumbnail_text: T.slice(0, 12),
       shots,
       youtube: {
-        title: first.slice(0, 40),
-        description: `${T}\n\n${shots.map(s => s.text).slice(0, 4).join('\n')}\n\n#쇼츠 #${T.replace(/\s/g, '')}`,
-        hashtags: ['#쇼츠', '#숏폼', '#' + T.replace(/[\s#]/g, ''), '#shorts'],
+        title: titleSet[0].slice(0, 60),
+        description: `${T}\n\n${shots.map(s => s.text).slice(0, 4).join('\n')}\n\n#쇼츠 #${tagCore}`,
+        hashtags: ['#쇼츠', '#숏폼', '#' + tagCore, '#shorts'],
         pinned_comment: `${T} — 여러분 생각은 어떠세요? 댓글로 알려 주세요.`
       }
     };
