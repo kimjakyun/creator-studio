@@ -1,0 +1,13 @@
+{
+  "name": "원클릭 콘텐츠 스튜디오",
+  "short_name": "콘텐츠 스튜디오",
+  "description": "쇼츠 대본·블로그 글·9:16 영상을 무료로 만드는 도구",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#0b1020",
+  "theme_color": "#0b1020",
+  "lang": "ko",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}
