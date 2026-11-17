@@ -525,8 +525,8 @@ const App = {
 
     document.getElementById('btnReloadShots').addEventListener('click', () => { this.syncShotsToRenderer(); this.toast('대본을 다시 불러왔습니다'); });
     document.getElementById('videoTitle').addEventListener('input', () => this.syncShotsToRenderer(true));
-    document.getElementById('hlColor').addEventListener('change', e => { Renderer.hl = e.target.value; Renderer.drawFrame(0); });
-    document.getElementById('watermark').addEventListener('input', e => { Renderer.watermark = e.target.value; Renderer.drawFrame(0); });
+    document.getElementById('hlColor').addEventListener('change', e => { Renderer.hl = e.target.value; Renderer.drawPreview(); });
+    document.getElementById('watermark').addEventListener('input', e => { Renderer.watermark = e.target.value; Renderer.drawPreview(); });
 
     document.getElementById('btnPreview').addEventListener('click', () => {
       if (!Renderer.shots.length) { this.toast('먼저 대본을 만들어 주세요'); return; }
@@ -558,12 +558,12 @@ const App = {
       watermark: document.getElementById('watermark').value
     });
     if (redrawOnly) {
-      Renderer.drawFrame(0);
+      Renderer.drawPreview();
       document.getElementById('shotCount').textContent = Renderer.shots.length + '컷 · ' + Math.round(Renderer.total) + '초';
       return;
     }
     this.renderShotList();
-    Renderer.drawFrame(0);
+    Renderer.drawPreview();
     document.getElementById('shotCount').textContent = Renderer.shots.length + '컷 · ' + Math.round(Renderer.total) + '초';
   },
 
@@ -594,7 +594,7 @@ const App = {
         else this.plan.shots[i].text = e.target.value;
         Store.data.plan = this.plan; Store.save();
         Renderer.setContent({ shots: this.plan.shots.map(x => ({ text: x.text, seconds: x.seconds })) });
-        Renderer.drawFrame(0);
+        Renderer.drawPreview();
         document.getElementById('shotCount').textContent = Renderer.shots.length + '컷 · ' + Math.round(Renderer.total) + '초';
       });
     });
@@ -1006,6 +1006,7 @@ const App = {
 const Templates = {
   presets: {
     emotion: { roles: ['hook', 'situation', 'crisis', 'turn', 'peak', 'close'], weights: [1, 1.4, 1.5, 1.7, 1.9, 1.4] },
+    info: { roles: ['hook', 'myth', 'fact', 'proof', 'how', 'close'], weights: [1, 1.3, 1.7, 1.5, 1.7, 1.2] },
     movie: { roles: ['hook', 'intro', 'plot', 'twist', 'cliff', 'close'], weights: [1, 1.4, 1.8, 1.8, 1.6, 1.2] },
     shopping: { roles: ['hook', 'reveal', 'feature', 'feature', 'proof', 'cta'], weights: [1, 1.3, 1.6, 1.6, 1.7, 1.2] },
     story: { roles: ['hook', 'char', 'event', 'conflict', 'climax', 'ending'], weights: [1, 1.4, 1.6, 1.6, 1.8, 1.4] }
@@ -1017,26 +1018,35 @@ const Templates = {
     const weights = p.weights.slice(0, scenes);
     const wsum = weights.reduce((a, b) => a + b, 0);
     const total = length || 40;
-    const T = topic.replace(/["']/g, '');
+    const T = topic.replace(/["']/g, '').trim();
+    const Ts = T.length > 18 ? T.slice(0, 18) + '…' : T;
     const lines = {
       emotion: [
-        `그날 밤, ${T} — 아무도 말하지 않았다`,
-        `[누가] ${T} 때문에 [어디서] 하루를 보냈다`,
+        `그날 밤, 아무도 말하지 않았다`,
+        `${Ts} — [누가] [어디서] 하루를 보냈다`,
         `그런데 [예상치 못한 일]이 벌어졌다`,
         `[반전] 사실은 [숨겨진 사정]이 있었다`,
         `[감정 절정] 그 사람이 마지막에 남긴 말`,
-        `이 이야기, 끝까지 보셨다면 저장해 두세요`
+        `끝까지 보셨다면 저장해 두세요`
+      ],
+      info: [
+        `${Ts}, 이거 모르면 손해입니다`,
+        `많이들 [흔한 오해]라고 알고 계십니다`,
+        `실제로는 [사실]입니다. 이유는 [근거] 때문입니다`,
+        `[근거 2] — [수치나 사례 한 줄]`,
+        `그래서 [구체적인 방법]을 권합니다`,
+        `[한 줄 정리] · 저장해 두면 쓸 데 있습니다`
       ],
       movie: [
         `이 영화, 결말 하나 때문에 다시 봤습니다`,
-        `${T} — 줄거리는 단순합니다`,
+        `${Ts} — 줄거리는 단순합니다`,
         `[주인공]은 [목표]를 향해 움직이고, [장애물]을 만납니다`,
         `그런데 중반에 [반전]이 터집니다`,
         `결말 직전, [핵심 장면]에서 모든 게 뒤집힙니다`,
         `스포일러 없이 보고 싶다면 저장만 해두세요`
       ],
       shopping: [
-        `${T}, 이거 모르고 사면 돈 아깝습니다`,
+        `${Ts}, 이거 모르고 사면 돈 아깝습니다`,
         `그래서 직접 써봤습니다 — [제품명]`,
         `첫 번째, [기능1]이 생각보다 편합니다`,
         `두 번째, [기능2]는 [상황]에서 진짜 유용합니다`,
@@ -1045,7 +1055,7 @@ const Templates = {
       ],
       story: [
         `30년 동안 열리지 않은 문이 있었다`,
-        `${T} — [주인공]은 [장소]로 이사 왔다`,
+        `${Ts} — [주인공]은 [장소]로 이사 왔다`,
         `첫날 밤, [소리/흔적]이 시작됐다`,
         `[주인공]은 [선택]을 해야 했다`,
         `문이 열린 순간, [반전]이 드러났다`,
@@ -1057,7 +1067,9 @@ const Templates = {
       n: i + 1,
       role,
       text: lines[i] || `[${T}] ${i + 1}번째 장면 자막을 적어 주세요`,
-      image_query: ['dramatic sky sunset', 'old house window', 'rainy street night', 'hands holding photo', 'mountain fog morning', 'calm sea sunrise'][i % 6],
+      image_query: (preset === 'info'
+        ? ['air conditioner indoor unit', 'dust filter close up', 'clean living room', 'technician working', 'home interior sunlight', 'cozy living room']
+        : ['dramatic sky sunset', 'old house window', 'rainy street night', 'hands holding photo', 'mountain fog morning', 'calm sea sunrise'])[i % 6],
       seconds: Math.max(2, Math.round(total * weights[i] / wsum))
     }));
     /* 합계 보정 */

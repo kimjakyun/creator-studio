@@ -17,7 +17,7 @@ const Renderer = {
   init(canvas) {
     this.canvas = canvas;
     this.ctx = canvas.getContext('2d', { alpha: false });
-    this.drawFrame(0);
+    this.drawPreview();
   },
 
   setContent({ title, shots, images, hl, watermark }) {
@@ -44,6 +44,12 @@ const Renderer = {
     for (const seg of this.timeline) if (t < seg.end) return { seg, p: (t - seg.start) / (seg.end - seg.start) };
     const last = this.timeline[this.timeline.length - 1];
     return { seg: last, p: 1 };
+  },
+
+  /* 정지 상태(썸네일) — 시작 페이드를 건너뛴 프레임 */
+  drawPreview() {
+    const t = Math.min(Math.max(0.6, 0), this.total || 0.6);
+    this.drawFrame(t);
   },
 
   /* ---------- 그리기 ---------- */
