@@ -105,13 +105,13 @@ const App = {
     const g = Gemini.available(), y = YouTube.available();
     document.getElementById('dotGemini').className = 'dot ' + (g ? 'ok' : 'off');
     document.getElementById('txtGemini').innerHTML = g
-      ? '<b>AI 대본 정교화 (Gemini)</b> · 켜짐 (' + Gemini.model + ')'
-      : '<b>AI 대본 정교화 (Gemini)</b> · 무료 키를 넣으면 켜집니다';
+      ? '<b>AI 대본 다듬기 (제미나이)</b> · 켜짐'
+      : '<b>AI 대본 다듬기 (제미나이)</b> · 무료 키를 넣으면 켜집니다';
     document.getElementById('dotYt').className = 'dot ' + (y ? 'ok' : 'off');
     document.getElementById('txtYt').innerHTML = y
       ? '<b>유튜브 인기 쇼츠 검색</b> · 켜짐'
       : '<b>유튜브 인기 쇼츠 검색</b> · 무료 키를 넣으면 켜집니다';
-    document.getElementById('engineTag').textContent = g ? 'AI 모드 · ' + Gemini.model : '템플릿 모드 (키 없이 동작)';
+    document.getElementById('engineTag').textContent = g ? 'AI 모드 (제미나이)' : '템플릿 모드 (키 없이 동작)';
     document.getElementById('engineTag').className = 'tag ' + (g ? 'ready' : '');
     document.getElementById('geminiTag').textContent = g ? '입력됨' : '미입력';
     document.getElementById('geminiTag').className = 'tag ' + (g ? 'ready' : '');
@@ -315,7 +315,7 @@ const App = {
     blog.innerHTML = '';
 
     const engineBadge = plan.engine === 'ai'
-      ? '<span class="tag ready">AI 생성 · Gemini</span>'
+      ? '<span class="tag ready">AI가 쓴 초안</span>'
       : '<span class="tag">내장 템플릿</span>';
     out.innerHTML = `
       <div class="row between" style="margin-bottom:10px">
@@ -458,7 +458,7 @@ const App = {
     out.innerHTML = `
       <div class="card tight">
         <div class="row" style="margin-bottom:10px">
-          <span class="tag ${plan.engine === 'ai' ? 'ready' : ''}">${plan.engine === 'ai' ? 'AI 생성 · Gemini' : '내장 템플릿'}</span>
+          <span class="tag ${plan.engine === 'ai' ? 'ready' : ''}">${plan.engine === 'ai' ? 'AI가 쓴 초안' : '내장 템플릿'}</span>
           <span class="tag">${plan.markdown.replace(/\s/g, '').length}자</span>
         </div>
         ${plan.aiError ? `<div class="note bad">AI 호출 실패: ${esc(plan.aiError)}</div>` : ''}
@@ -944,7 +944,7 @@ const App = {
       try {
         const r = await Gemini.test();
         el.textContent = '연결 성공 ✓ (응답: ' + r + ')';
-        this.toast('Gemini 연결 성공');
+        this.toast('AI 연결에 성공했습니다');
       } catch (e) {
         el.textContent = '실패: ' + e.message;
       }
