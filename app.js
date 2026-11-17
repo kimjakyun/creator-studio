@@ -312,6 +312,8 @@ const App = {
       return;
     }
     kindTag.textContent = '쇼츠';
+    document.getElementById('planSectionLabel').textContent = '컷별 대본';
+    document.getElementById('metaSectionLabel').textContent = '유튜브 업로드 세트';
     blog.innerHTML = '';
 
     const engineBadge = plan.engine === 'ai'
@@ -454,6 +456,8 @@ const App = {
     const meta = document.getElementById('metaOutput');
     const blog = document.getElementById('blogOutput');
     document.getElementById('planKindTag').textContent = '블로그';
+    document.getElementById('planSectionLabel').textContent = '블로그 초안';
+    document.getElementById('metaSectionLabel').textContent = '블로그에 함께 쓰는 것';
 
     out.innerHTML = `
       <div class="card tight">
@@ -1170,7 +1174,11 @@ ${T}는 정보를 미리 확인하는 것만으로도 절반은 해결됩니다.
       ],
       meta_description: `${T}의 시기, 비용, 진행 순서를 한 번에 정리했습니다. 상담 전 체크리스트 포함.`,
       markdown: md,
-      hashtags: ['#' + T.replace(/[\s#]/g, ''), '#정보', '#정리', '#가이드'],
+      hashtags: (() => {
+        const w = T.replace(/[^\uAC00-\uD7A3a-zA-Z0-9\s]/g, ' ').split(/\s+/).filter(x => x.length >= 2);
+        const core = w.slice(0, 2).join('').slice(0, 12) || '정보';
+        return ['#' + core, '#정보', '#정리', '#가이드'];
+      })(),
       faq: [],
       cta: `${T}, 궁금한 점은 댓글로 남겨 주세요.`
     };
