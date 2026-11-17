@@ -30,9 +30,9 @@ const YouTube = {
       try { const j = await res.json(); detail = (j.error && j.error.message) || ''; } catch (_) {}
       if (res.status === 400 || res.status === 403) {
         if (/quota/i.test(detail)) throw new Error('오늘 무료 한도(10,000유닛)를 다 썼습니다. 내일 다시 시도하세요.');
-        throw new Error('유튜브 API 오류 ' + res.status + ' — 키와 API 사용 설정을 확인하세요. ' + detail.slice(0, 120));
+        throw new Error('유튜브 연결 오류 ' + res.status + ' — 키와 사용 설정을 확인하세요. ' + detail.slice(0, 120));
       }
-      throw new Error('유튜브 API 오류 ' + res.status + (detail ? ' — ' + detail.slice(0, 120) : ''));
+      throw new Error('유튜브 연결 오류 ' + res.status + (detail ? ' — ' + detail.slice(0, 120) : ''));
     }
     const data = await res.json();
     const items = (data.items || []).filter(i => i.id && i.id.videoId);

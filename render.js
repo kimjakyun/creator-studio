@@ -349,11 +349,11 @@ const Studio = {
   },
 
   async record({ speak = false, onProgress } = {}) {
-    if (!this.canRender()) throw new Error('이 브라우저는 영상 녹화(MediaRecorder)를 지원하지 않습니다. Chrome·Edge·삼성 인터넷을 써 주세요.');
+    if (!this.canRender()) throw new Error('이 브라우저는 영상 저장 기능을 지원하지 않습니다. 크롬·엣지·삼성 인터넷을 써 주세요.');
     this.stop();
     const mime = this.pickMime();
     const stream = Renderer.canvas.captureStream(Renderer.fps);
-    const rec = new MediaRecorder(stream, { mimeType: mime, videoBitsPerSecond: 9_000_000 });
+    const rec = new MediaRecorder(stream, { mimeType: mime, videoBitsPerSecond: 6_000_000 });
     const chunks = [];
     rec.ondataavailable = e => { if (e.data && e.data.size) chunks.push(e.data); };
 

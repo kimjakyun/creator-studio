@@ -110,7 +110,7 @@ const App = {
     document.getElementById('dotYt').className = 'dot ' + (y ? 'ok' : 'off');
     document.getElementById('txtYt').innerHTML = y
       ? '<b>유튜브 인기 쇼츠 검색</b> · 켜짐'
-      : '<b>유튜브 인기 쇼츠 검색</b> · 무료 API 키를 넣으면 켜집니다';
+      : '<b>유튜브 인기 쇼츠 검색</b> · 무료 키를 넣으면 켜집니다';
     document.getElementById('engineTag').textContent = g ? 'AI 모드 · ' + Gemini.model : '템플릿 모드 (키 없이 동작)';
     document.getElementById('engineTag').className = 'tag ' + (g ? 'ready' : '');
     document.getElementById('geminiTag').textContent = g ? '입력됨' : '미입력';
@@ -126,14 +126,14 @@ const App = {
     const el = document.getElementById('browserNote');
     if (!Studio.canRender()) {
       el.className = 'note bad';
-      el.innerHTML = '<b>이 브라우저는 영상 녹화를 지원하지 않습니다.</b> Chrome·Edge·삼성 인터넷에서 열어 주세요. (사파리는 최신 버전에서 MP4로 저장됩니다.)';
+      el.innerHTML = '<b>이 브라우저는 영상 저장을 지원하지 않습니다.</b> 크롬·엣지·삼성 인터넷에서 열어 주세요. (사파리는 최신 버전에서 MP4로 저장됩니다.)';
       return;
     }
     const mime = Studio.pickMime();
     el.className = 'note';
     el.innerHTML = mime.includes('mp4')
-      ? '저장 형식: <b>MP4</b> (사파리) · 실시간 렌더링이라 영상 길이만큼 걸립니다.'
-      : '저장 형식: <b>WebM</b> (크롬 계열) · 유튜브에 그대로 업로드할 수 있습니다. 음성은 파일에 들어가지 않습니다.';
+      ? '저장 형식: <b>MP4 영상</b> (사파리) · 실시간으로 그리기 때문에 영상 길이만큼 시간이 걸립니다.'
+      : '저장 형식: <b>웹엠(WebM) 영상</b> (크롬 계열) · 유튜브에 그대로 올릴 수 있습니다. 음성은 파일에 들어가지 않습니다.';
   },
 
   /* ---------- 1. 만들기 ---------- */
@@ -708,7 +708,7 @@ const App = {
 
   async renderVideo() {
     if (!Renderer.shots.length) { this.toast('먼저 대본을 만들어 주세요'); return; }
-    if (!Studio.canRender()) { this.toast('이 브라우저는 영상 저장을 지원하지 않습니다. Chrome을 써 주세요', 3200); return; }
+    if (!Studio.canRender()) { this.toast('이 브라우저는 영상 저장을 지원하지 않습니다. 크롬을 써 주세요', 3200); return; }
     if (Studio.recording) return;
     const btn = document.getElementById('btnRender');
     btn.disabled = true;
@@ -730,7 +730,7 @@ const App = {
       const name = 'shorts-' + stamp() + '.' + ext;
       download(blob, name);
       this.toast('저장했습니다: ' + name, 3000);
-      label.textContent = '저장 완료 (' + (blob.size / 1048576).toFixed(1) + 'MB, ' + ext.toUpperCase() + ') · 유튜브에 그대로 올릴 수 있습니다';
+      label.textContent = '저장 완료 · ' + (blob.size / 1048576).toFixed(1) + 'MB 짜리 ' + (ext === 'mp4' ? 'MP4' : '웹엠(WebM)') + ' 영상입니다. 유튜브에 그대로 올릴 수 있어요.';
     } catch (e) {
       label.textContent = '';
       this.toast(e.message || '렌더링 실패', 3200);
@@ -778,7 +778,7 @@ const App = {
         const s = Renderer.shots[i];
         const src = this.images.length ? this.images[i % this.images.length] : null;
         let image = null;
-        if (src) image = src.source === 'upload' ? await toJpegDataUrl(src.img) : src.url;
+        if (src) image = await toJpegDataUrl(src.img);   // 브라우저가 본 사진 그대로 PC로 전달
         shots.push({ text: s.text, seconds: s.seconds, image });
       }
       const payload = {
@@ -834,7 +834,7 @@ const App = {
     const q = document.getElementById('refQuery').value.trim();
     if (!q) { this.toast('키워드를 적어 주세요'); return; }
     if (!YouTube.available()) {
-      this.toast('유튜브 무료 API 키를 설정에 넣으면 자동으로 가져옵니다', 3000);
+      this.toast('설정에서 유튜브 무료 키를 넣으면 자동으로 가져옵니다', 3000);
       window.open('https://www.youtube.com/results?search_query=' + encodeURIComponent(q + ' shorts'), '_blank', 'noopener');
       return;
     }

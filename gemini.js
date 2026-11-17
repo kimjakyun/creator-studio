@@ -43,7 +43,7 @@ const Gemini = {
       try { const j = await res.json(); detail = (j.error && (j.error.message || j.error.status)) || ''; } catch (_) {}
       let msg;
       if (res.status === 400 && /API key not valid/i.test(detail)) msg = 'API 키가 올바르지 않습니다. 설정에서 키를 다시 확인하세요.';
-      else if (res.status === 403) msg = '이 키로는 사용할 수 없습니다(권한/할당량). AI Studio에서 키를 새로 만들어 보세요.';
+      else if (res.status === 403) msg = '이 키로는 사용할 수 없습니다(권한이나 한도 문제). 구글 AI 스튜디오에서 키를 새로 만들어 보세요.';
       else if (res.status === 429) msg = '무료 한도를 넘었습니다. 잠시 뒤(또는 내일) 다시 시도하세요.';
       else if (res.status === 404) msg = '모델 이름을 찾을 수 없습니다. 설정에서 다른 모델을 골라 보세요.';
       else msg = 'Gemini 오류 ' + res.status + (detail ? ' — ' + detail : '');

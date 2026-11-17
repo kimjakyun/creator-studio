@@ -61,7 +61,7 @@
         </button>
         <button class="preset" data-preset="blog">
           <span class="em">📝</span>
-          <span><b>블로그 글</b><small>SEO 제목·본문·해시태그</small></span>
+          <span><b>블로그 글</b><small>검색 잘 되는 제목·본문</small></span>
         </button>
         <button class="preset" data-preset="refs">
           <span class="em">🔍</span>
@@ -86,11 +86,11 @@
         </div>
         <div class="status" style="margin-top:8px">
           <span class="dot off" id="dotGemini"></span>
-          <span id="txtGemini"><b>AI 대본 정교화 (Gemini)</b> · 무료 키를 넣으면 켜집니다</span>
+          <span id="txtGemini"><b>AI 대본 다듬기 (제미나이)</b> · 무료 키를 넣으면 켜집니다</span>
         </div>
         <div class="status" style="margin-top:8px">
           <span class="dot off" id="dotYt"></span>
-          <span id="txtYt"><b>유튜브 인기 쇼츠 검색</b> · 무료 API 키를 넣으면 켜집니다</span>
+          <span id="txtYt"><b>유튜브 인기 쇼츠 검색</b> · 무료 키를 넣으면 켜집니다</span>
         </div>
         <button class="btn small ghost" style="margin-top:12px" data-goto="settings">⚙️ 키 넣으러 가기</button>
       </div>
@@ -207,7 +207,7 @@
                 <input type="text" id="commonsQuery" placeholder="영어 검색어 (예: air conditioner)" style="flex:1;min-width:150px">
                 <button class="btn small" id="btnCommonsSearch">검색</button>
               </div>
-              <div class="hint">Wikimedia Commons의 퍼블릭 도메인·CC 자료만 모읍니다. 파일별 라이선스는 아래에 표시됩니다.</div>
+              <div class="hint">위키미디어 공용(Wikimedia Commons)의 퍼블릭 도메인·자유 라이선스(CC) 자료만 모읍니다. 파일별 라이선스가 사진마다 표시됩니다.</div>
               <div class="img-grid" id="commonsResults" style="margin-top:10px"></div>
               <button class="btn small primary block" id="btnUseCommons" style="margin-top:10px;display:none">선택한 사진 사용</button>
             </div>
@@ -246,7 +246,7 @@
             <label class="field">
               <span>음성</span>
               <select id="voiceMode">
-                <option value="none">무음 (BGM 없음 · 저작권 안전)</option>
+                <option value="none">무음 (배경음악 없음 · 저작권 안전)</option>
                 <option value="speech">브라우저 음성 미리듣기 (파일에는 안 들어감)</option>
               </select>
             </label>
@@ -278,7 +278,7 @@
     <!-- ============ 3. 레퍼런스 ============ -->
     <section class="tab" id="tab-refs">
       <h1 class="page-title">🔍 인기 레퍼런스 분석</h1>
-      <p class="page-sub">잘 된 쇼츠의 제목·조회수·길이를 모아 후킹 패턴과 자막 구조를 뽑아냅니다.</p>
+      <p class="page-sub">잘 된 쇼츠의 제목·조회수·길이를 모아 첫 문장 공식과 자막 구조를 뽑아냅니다.</p>
 
       <div class="card">
         <label class="field">
@@ -287,7 +287,7 @@
         </label>
         <div class="row">
           <button class="btn primary" id="btnRefSearch">조회수 높은 쇼츠 찾기</button>
-          <button class="btn ghost small" id="btnRefOpenYT">유튜브에서 직접 검색 ↗</button>
+          <button class="btn ghost small" id="btnRefOpenYT">유튜브에서 직접 찾기 ↗</button>
         </div>
         <div class="hint" id="refKeyHint"></div>
       </div>
@@ -309,11 +309,11 @@
     <!-- ============ 4. 설정 ============ -->
     <section class="tab" id="tab-settings">
       <h1 class="page-title">⚙️ 설정</h1>
-      <p class="page-sub">키는 이 브라우저(localStorage)에만 저장되고 어디로도 보내지 않습니다. 비우고 저장하면 삭제됩니다.</p>
+      <p class="page-sub">키는 이 브라우저 안에만 저장되고 어디로도 보내지 않습니다. 지우고 저장하면 삭제됩니다.</p>
 
       <div class="card">
         <div class="row between">
-          <h3>Google Gemini (무료 AI)</h3>
+          <h3>구글 제미나이 (무료 AI)</h3>
           <span class="tag" id="geminiTag">미입력</span>
         </div>
         <label class="field" style="margin-top:10px">
@@ -323,9 +323,9 @@
         <label class="field">
           <span>모델</span>
           <select id="geminiModel">
-            <option value="gemini-2.5-flash">gemini-2.5-flash (권장 · 무료 등급)</option>
-            <option value="gemini-2.5-flash-lite">gemini-2.5-flash-lite (가장 빠름)</option>
-            <option value="gemini-2.0-flash">gemini-2.0-flash</option>
+            <option value="gemini-2.5-flash">제미나이 2.5 플래시 (권장 · 무료 등급)</option>
+            <option value="gemini-2.5-flash-lite">제미나이 2.5 플래시 라이트 (가장 빠름)</option>
+            <option value="gemini-2.0-flash">제미나이 2.0 플래시</option>
           </select>
         </label>
         <div class="row">
@@ -338,8 +338,8 @@
           <summary>무료 키 발급 3분 안내</summary>
           <ol>
             <li><b>aistudio.google.com/apikey</b> 접속 → 구글 로그인</li>
-            <li><b>Create API key</b> 누르고 프로젝트 선택(없으면 자동 생성)</li>
-            <li><b>AIza…</b>로 시작하는 키 복사 → 위 칸에 붙여넣기 → 저장</li>
+            <li><b>API 키 만들기(Create API key)</b> 누르고 프로젝트 선택(없으면 자동 생성)</li>
+            <li><b>AIza…</b>로 시작하는 키를 복사해 위 칸에 붙여넣고 저장</li>
           </ol>
           <p>무료 등급은 하루 수백 회 수준으로 충분합니다. 결제 카드 등록 없이 쓸 수 있습니다. (정확한 한도는 구글 정책에 따라 달라집니다.)</p>
         </details>
@@ -347,7 +347,7 @@
 
       <div class="card">
         <div class="row between">
-          <h3>YouTube Data API v3</h3>
+          <h3>유튜브 데이터 API v3 (YouTube Data API)</h3>
           <span class="tag" id="ytTag">미입력</span>
         </div>
         <label class="field" style="margin-top:10px">
@@ -362,8 +362,8 @@
         <details class="help">
           <summary>무료 키 발급 안내 · 하루 한도</summary>
           <ol>
-            <li>Google Cloud Console → 새 프로젝트</li>
-            <li><b>YouTube Data API v3</b> 사용 설정</li>
+            <li>구글 클라우드 콘솔 → 새 프로젝트</li>
+            <li><b>유튜브 데이터 API v3</b> 사용 설정</li>
             <li>사용자 인증 정보 → API 키 만들기 → 복사</li>
           </ol>
           <p>무료 한도는 하루 10,000 유닛이고, 검색 1회가 100유닛입니다(하루 약 100회 검색). 조회수·길이는 영상 1개당 1유닛이라 저렴합니다.</p>
@@ -371,18 +371,18 @@
       </div>
 
       <div class="card">
-        <h3>유료 AI 영상 확장 슬롯 <span class="tag wait">연동 준비</span></h3>
+        <h3>유료 AI 영상 확장 자리 <span class="tag wait">연동 준비</span></h3>
         <p style="margin-bottom:12px">나중에 유료 AI 영상 API를 붙일 자리입니다. 키를 저장해 두면 그대로 보관되고, <b>지금은 영상 생성에 사용되지 않습니다</b>. 연동되면 이 화면에서 바로 켜집니다.</p>
-        <label class="field"><span>OpenAI (Sora 계열)</span><input type="password" id="keyOpenai" placeholder="sk-..." autocomplete="off"></label>
-        <label class="field"><span>Runway</span><input type="password" id="keyRunway" placeholder="key_..." autocomplete="off"></label>
-        <label class="field"><span>Kling</span><input type="password" id="keyKling" placeholder="ak_..." autocomplete="off"></label>
-        <label class="field"><span>Luma AI</span><input type="password" id="keyLuma" placeholder="luma-..." autocomplete="off"></label>
+        <label class="field"><span>오픈AI · 소라 (OpenAI Sora)</span><input type="password" id="keyOpenai" placeholder="sk-..." autocomplete="off"></label>
+        <label class="field"><span>런웨이 (Runway)</span><input type="password" id="keyRunway" placeholder="key_..." autocomplete="off"></label>
+        <label class="field"><span>클링 (Kling)</span><input type="password" id="keyKling" placeholder="ak_..." autocomplete="off"></label>
+        <label class="field"><span>루마 AI (Luma)</span><input type="password" id="keyLuma" placeholder="luma-..." autocomplete="off"></label>
         <button class="btn small primary" id="btnSavePaid">키 보관</button>
         <div class="hint" id="paidStatus"></div>
       </div>
 
       <div class="card">
-        <h3>내 데이터</h3>
+        <h3>내 정보</h3>
         <p>설정과 마지막 프로젝트는 이 기기의 브라우저에만 저장됩니다. 서버로 보내지 않습니다.</p>
         <div class="row" style="margin-top:10px">
           <button class="btn small ghost" id="btnExport">설정 내보내기</button>
@@ -391,15 +391,15 @@
       </div>
 
       <div class="card">
-        <h3>PC용 고화질 패키지</h3>
-        <p>음성(한국어 TTS)과 1080×1920 MP4가 필요하면 PC용 zip을 받아 실행하세요. 설치 없이 압축만 풀고 <b>run_windows.bat</b>을 두 번 누르면 됩니다.</p>
+        <h3>PC용 고화질 패키지 (설치 없이 실행)</h3>
+        <p>한국어 음성까지 넣은 1080×1920 MP4 영상이 필요하면 PC용 압축 파일(zip)을 받아 실행하세요. 설치 없이 압축만 풀고 <b>run_windows.bat</b>을 두 번 누르면 됩니다.</p>
         <a class="btn primary block" style="margin-top:12px" href="https://github.com/kimjakyun/creator-studio/releases/latest/download/creator-studio-pc.zip" target="_blank" rel="noopener">⬇ PC용 패키지 내려받기 (zip)</a>
       </div>
 
       <div class="card">
         <h3>정보</h3>
-        <p>버전 <b id="appVersion">1.0</b> · 정적 웹앱(GitHub Pages) · 설치 없이 사용</p>
-        <p style="margin-top:6px">브라우저: Chrome·Edge·삼성 인터넷 권장. Safari는 영상 저장이 MP4로 됩니다.</p>
+        <p>버전 <b id="appVersion">1.0</b> · 설치 없이 쓰는 웹앱 · 깃허브 페이지스로 배포</p>
+        <p style="margin-top:6px">권장 브라우저: 크롬·엣지·삼성 인터넷. 사파리는 영상이 MP4로 저장됩니다.</p>
       </div>
 
       <div class="footer">원클릭 콘텐츠 스튜디오 · 무료 배포판</div>
